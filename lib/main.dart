@@ -1,4 +1,8 @@
-import 'package:boardgame_collector/bloc/shared/navigation/cubit/navigation_cubit.dart';
+import 'package:boardgame_collector/bloc/layout/navigation_cubit.dart';
+import 'package:boardgame_collector/pages/collection/collection_list.dart';
+import 'package:boardgame_collector/pages/home/home.dart';
+import 'package:boardgame_collector/pages/layout/navigation.dart';
+import 'package:boardgame_collector/pages/profile/profile.dart';
 import 'package:boardgame_collector/util/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +14,8 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  final List<Widget> pages = const [Home(), CollectionList(), Profile()];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,57 +24,33 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.dark,
       home: BlocProvider(
         create: (_) => NavigationCubit(),
-        child: Scaffold(
-          appBar: AppBar(
-            actionsPadding: EdgeInsets.only(right: 21),
-            title: Text(
-              "Hello, Arthur 👋",
-              style: Theme.of(
-                context,
-              ).textTheme.headlineMedium!.copyWith(color: Colors.white),
-            ),
-            actions: [
-              IconButton.filled(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.notifications_rounded,
-                  color: AppColors.backgroundLighten1,
-                ),
-              ),
-            ],
-          ),
-
-          body: Column(
-            children: [
-              Row(children: [Text("Test")]),
-            ],
-          ),
-          bottomNavigationBar: BlocBuilder<NavigationCubit, int>(
-            builder:
-                (context, state) => NavigationBar(
-                  labelBehavior:
-                      NavigationDestinationLabelBehavior.onlyShowSelected,
-                  destinations: [
-                    NavigationDestination(
-                      icon: Icon(Icons.home),
-                      label: "Home",
+        child: BlocBuilder<NavigationCubit, int>(
+          builder:
+              (context, state) => Scaffold(
+                appBar: AppBar(
+                  actionsPadding: EdgeInsets.only(right: 21),
+                  title: Padding(
+                    padding: EdgeInsets.only(left: 6),
+                    child: Text(
+                      "Hello, Arthur 👋",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.headlineMedium!.copyWith(color: Colors.white),
                     ),
-                    NavigationDestination(
-                      icon: Icon(Icons.shelves),
-                      label: "Collection",
-                    ),
-                    NavigationDestination(
-                      icon: Icon(Icons.person_2_rounded),
-                      label: "Profile",
+                  ),
+                  actions: [
+                    IconButton.filled(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.notifications_rounded,
+                        color: AppColors.backgroundLighten1,
+                      ),
                     ),
                   ],
-                  onDestinationSelected:
-                      (value) => BlocProvider.of<NavigationCubit>(
-                        context,
-                      ).changeIndex(value),
-                  selectedIndex: state,
                 ),
-          ),
+                body: pages.elementAt(state),
+                bottomNavigationBar: Navigation(),
+              ),
         ),
       ),
     );
