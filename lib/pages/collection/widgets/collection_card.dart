@@ -1,34 +1,72 @@
 import 'package:flutter/material.dart';
 
 class CollectionCard extends StatelessWidget {
-  const CollectionCard({super.key});
+  final int id;
+  final String title;
+  final String description;
+  final int boardgameCount;
+
+  const CollectionCard({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.boardgameCount,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 3,
       margin: EdgeInsets.symmetric(horizontal: 21, vertical: 7),
       child: Padding(
         padding: EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('RPG', style: Theme.of(context).textTheme.titleLarge),
-            Text(
-              "My current RPG collection of tabletop games.",
-              style: Theme.of(context).textTheme.bodyLarge,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.gamepad_rounded),
+                    SizedBox(width: 4),
+                    Text(
+                      '$boardgameCount',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            SizedBox(height: 16),
+
+            SizedBox(height: 12),
+            Text(description, style: Theme.of(context).textTheme.bodyLarge),
+            SizedBox(height: 21),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Icon(Icons.gamepad_rounded),
-                SizedBox(width: 4),
-                Text('5', style: Theme.of(context).textTheme.titleMedium),
-                SizedBox(width: 16),
-                Icon(Icons.toys),
-                SizedBox(width: 4),
-                Text('5', style: Theme.of(context).textTheme.titleMedium),
+                Column(
+                  spacing: 4,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Created at: 05/13/2025',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    Text(
+                      'Last modified: 05/13/2025',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
               ],
             ),
           ],
