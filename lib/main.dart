@@ -1,3 +1,4 @@
+import 'package:boardgame_collector/bloc/collections/collection_list_cubit.dart';
 import 'package:boardgame_collector/bloc/layout/navigation_cubit.dart';
 import 'package:boardgame_collector/pages/collection/collection_list.dart';
 import 'package:boardgame_collector/pages/home/home.dart';
@@ -22,8 +23,11 @@ class MyApp extends StatelessWidget {
       title: 'Boardgame and Miniature Collector',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark,
-      home: BlocProvider(
-        create: (_) => NavigationCubit(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => NavigationCubit()),
+          BlocProvider(create: (_) => CollectionListCubit()),
+        ],
         child: BlocBuilder<NavigationCubit, int>(
           builder:
               (context, state) => Scaffold(

@@ -10,12 +10,12 @@ class CollectionData extends Entity {
   late int numberOfMiniatures;
 
   CollectionData(
-    super.id,
-    this.title,
-    this.description,
-    this.boardGames,
-    this.miniatures,
-  ) {
+    super.id, {
+    required this.title,
+    required this.description,
+    required this.boardGames,
+    required this.miniatures,
+  }) {
     numberOfGames = boardGames.length;
     numberOfMiniatures = miniatures.length;
   }
