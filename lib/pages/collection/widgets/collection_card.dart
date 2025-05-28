@@ -14,6 +14,10 @@ class CollectionCard extends StatelessWidget {
     required this.boardgameCount,
   });
 
+  /*
+    Add cover image to collections
+  */
+
   @override
   Widget build(BuildContext context) {
     return Card(
