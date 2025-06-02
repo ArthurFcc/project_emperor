@@ -19,4 +19,7 @@ class CollectionData extends Entity {
     numberOfGames = boardGames.length;
     numberOfMiniatures = miniatures.length;
   }
+
+  @override
+  set fromJson(Map<String, dynamic> json) {}
 }

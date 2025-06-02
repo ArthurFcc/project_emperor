@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 
-class HttpClient {
+class CustomHttpClient {
   late Dio _client;
 
-  HttpClient() {
+  CustomHttpClient() {
     _client = Dio(
       BaseOptions(
-        baseUrl: "https://localhost:44319/",
+        baseUrl: "https://192.168.0.217:44311/api",
         sendTimeout: const Duration(milliseconds: 60000),
         receiveTimeout: const Duration(milliseconds: 60000),
         connectTimeout: const Duration(milliseconds: 60000),
