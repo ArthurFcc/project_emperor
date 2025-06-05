@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:boardgame_collector/bloc/collections/new_collection/new_collection_cubit.dart';
 import 'package:boardgame_collector/components/inputs/my_textinput.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NewCollection extends StatefulWidget {
   const NewCollection({super.key});
@@ -9,72 +14,89 @@ class NewCollection extends StatefulWidget {
 }
 
 class _NewCollectionState extends State<NewCollection> {
+  XFile? currentImage;
+
+  Future<void> getImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      BlocProvider.of<NewCollectionCubit>(context).addCoverImage(image);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('New Collection')),
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 21, horizontal: 12),
-        child: SingleChildScrollView(
-          child: Column(
-            spacing: 21,
-            children: [
-              MyTextInput(
-                label: 'Title',
-                textEditingController: TextEditingController(),
-              ),
-              MyTextInput(
-                label: 'Description',
-                textBox: true,
-                textEditingController: TextEditingController(),
-              ),
-              Row(
+      body: BlocBuilder<NewCollectionCubit, NewCollectionState>(
+        builder:
+            (context, state) => Padding(
+              padding: EdgeInsets.only(left: 21, right: 21, bottom: 21),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 21,
                 children: [
-                  Text(
-                    'Board Games',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  GestureDetector(
+                    onTap: () => getImage(),
+                    child: Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadiusGeometry.circular(12),
+                      ),
+                      child:
+                          state.coverImage != null
+                              ? Container(
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                    isAntiAlias: true,
+                                    image: FileImage(
+                                      File(state.coverImage!.path),
+                                    ),
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.topCenter,
+                                  ),
+                                ),
+                              )
+                              : Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 165,
+                                  vertical: 48,
+                                ),
+                                child: Icon(
+                                  Icons.image,
+                                  color: Colors.grey,
+                                  size: 48,
+                                ),
+                              ),
+                    ),
+                  ),
+                  MyTextInput(
+                    label: 'Title',
+                    textEditingController: TextEditingController(),
+                  ),
+                  MyTextInput(
+                    label: 'Description',
+                    textBox: true,
+                    textEditingController: TextEditingController(),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsGeometry.only(right: 21),
+                        child: TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text("Cancel"),
+                        ),
+                      ),
+                      FilledButton(onPressed: () {}, child: Text("Save")),
+                    ],
                   ),
                 ],
               ),
-              /*
-                Add card with a auto-complete form field that fetches the board
-                game information
-              */
-              ListView.builder(
-                itemCount: 2,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder:
-                    (context, index) => Padding(
-                      padding: EdgeInsets.symmetric(vertical: 6),
-                      child: Placeholder(fallbackHeight: 120),
-                    ),
-              ),
-
-              /*
-                Miniatures will come in a future implementation
-              */
-              // Row(
-              //   children: [
-              //     Text(
-              //       'Miniatures',
-              //       style: Theme.of(context).textTheme.bodyLarge,
-              //     ),
-              //   ],
-              // ),
-              // ListView.builder(
-              //   itemCount: 2,
-              //   shrinkWrap: true,
-              //   physics: NeverScrollableScrollPhysics(),
-              //   itemBuilder:
-              //       (context, index) => Padding(
-              //         padding: EdgeInsets.symmetric(vertical: 6),
-              //         child: Placeholder(fallbackHeight: 120),
-              //       ),
-              // ),
-            ],
-          ),
-        ),
+            ),
       ),
     );
   }

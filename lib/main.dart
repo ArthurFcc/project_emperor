@@ -45,9 +45,9 @@ class MyApp extends StatelessWidget {
           builder:
               (context, state) => Scaffold(
                 appBar: AppBar(
-                  actionsPadding: EdgeInsets.only(right: 21),
+                  actionsPadding: EdgeInsets.only(right: 21, top: 12),
                   title: Padding(
-                    padding: EdgeInsets.only(left: 6),
+                    padding: EdgeInsets.only(left: 6, top: 12),
                     child: Text(
                       "Hello, Arthur 👋",
                       style: Theme.of(

@@ -15,13 +15,11 @@ final class CollectionListState extends Equatable {
     FetchStatus? status,
     List<CollectionData>? collections,
     bool? hasReachedMax,
-  }) {
-    return CollectionListState(
-      status: status ?? this.status,
-      collections: collections ?? this.collections,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-    );
-  }
+  }) => CollectionListState(
+    status: status ?? this.status,
+    collections: collections ?? this.collections,
+    hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+  );
 
   @override
   List<Object?> get props => [status, collections, hasReachedMax];

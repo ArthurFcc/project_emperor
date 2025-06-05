@@ -1,4 +1,5 @@
 import 'package:boardgame_collector/bloc/collections/collection_list_cubit.dart';
+import 'package:boardgame_collector/bloc/collections/new_collection/new_collection_cubit.dart';
 import 'package:boardgame_collector/pages/collection/new_collection.dart';
 import 'package:boardgame_collector/pages/collection/widgets/collection_card.dart';
 import 'package:boardgame_collector/service/shared/fetch_status.dart';
@@ -24,28 +25,51 @@ class _CollectionListState extends State<CollectionList> {
     return Scaffold(
       body: BlocBuilder<CollectionListCubit, CollectionListState>(
         builder:
-            (context, state) =>
-                state.status == FetchStatus.loading
-                    ? Center(
-                      child: SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                    : ListView.builder(
-                      itemCount: state.collections.length,
-                      shrinkWrap: true,
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      itemBuilder:
-                          (context, index) => CollectionCard(
-                            id: state.collections[index].id,
-                            boardgameCount:
-                                state.collections[index].numberOfGames,
-                            description: state.collections[index].description,
-                            title: state.collections[index].title,
-                          ),
+            (context, state) => SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsetsGeometry.only(
+                      left: 21,
+                      right: 21,
+                      top: 12,
                     ),
+                    child: SearchBar(
+                      hintText: "Search",
+                      leading: Padding(
+                        padding: EdgeInsetsGeometry.only(left: 8),
+                        child: Icon(Icons.search),
+                      ),
+                    ),
+                  ),
+                  state.status == FetchStatus.loading
+                      ? Center(
+                        child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                      : ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        addAutomaticKeepAlives: true,
+                        addRepaintBoundaries: true,
+                        itemCount: state.collections.length,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        itemBuilder:
+                            (context, index) => CollectionCard(
+                              id: state.collections[index].id,
+                              boardgameCount:
+                                  state.collections[index].numberOfGames,
+                              description: state.collections[index].description,
+                              title: state.collections[index].title,
+                            ),
+                      ),
+                ],
+              ),
+            ),
       ),
       floatingActionButton: FloatingActionButton(
         shape: CircleBorder(),
@@ -60,7 +84,11 @@ class _CollectionListState extends State<CollectionList> {
         MaterialPageRoute<void>(
           fullscreenDialog: true,
           barrierDismissible: false,
-          builder: (context) => NewCollection(),
+          builder:
+              (context) => BlocProvider(
+                create: (context) => NewCollectionCubit(),
+                child: NewCollection(),
+              ),
         ),
       );
 }
