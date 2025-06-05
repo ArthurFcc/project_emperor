@@ -22,6 +22,8 @@ class _CollectionListState extends State<CollectionList> {
 
   @override
   Widget build(BuildContext context) {
+    final FocusNode searchFocusNode = FocusNode();
+
     return Scaffold(
       body: BlocBuilder<CollectionListCubit, CollectionListState>(
         builder:
@@ -37,10 +39,12 @@ class _CollectionListState extends State<CollectionList> {
                     ),
                     child: SearchBar(
                       hintText: "Search",
+                      focusNode: searchFocusNode,
                       leading: Padding(
                         padding: EdgeInsetsGeometry.only(left: 8),
                         child: Icon(Icons.search),
                       ),
+                      onTapOutside: (event) => searchFocusNode.unfocus(),
                     ),
                   ),
                   state.status == FetchStatus.loading
