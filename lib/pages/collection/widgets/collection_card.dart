@@ -22,6 +22,7 @@ class CollectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
+      color: Color(0xFF2A292F),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(12),
       ),

@@ -27,19 +27,20 @@ class _NewCollectionState extends State<NewCollection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text('New Collection')),
       body: BlocBuilder<NewCollectionCubit, NewCollectionState>(
         builder:
             (context, state) => Padding(
-              padding: EdgeInsets.only(left: 21, right: 21, bottom: 21),
+              padding: EdgeInsets.symmetric(horizontal: 21),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 spacing: 21,
                 children: [
                   GestureDetector(
                     onTap: () => getImage(),
                     child: Card(
                       elevation: 3,
+                      color: Color(0xFF2A292F),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadiusGeometry.circular(12),
                       ),
