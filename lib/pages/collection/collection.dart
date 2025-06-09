@@ -39,6 +39,7 @@ class _ViewCollectionState extends State<Collection> {
                       context,
                     ).textTheme.titleSmall!.copyWith(color: Colors.white60),
                   ),
+                  Divider(height: 48),
                   ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     addAutomaticKeepAlives: true,
@@ -47,6 +48,28 @@ class _ViewCollectionState extends State<Collection> {
                     shrinkWrap: true,
                     padding: EdgeInsets.symmetric(vertical: 12),
                     itemBuilder: (context, index) => BoardgameCard(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "Created at: 05/13/2025",
+                              style: Theme.of(context).textTheme.titleSmall!
+                                  .copyWith(color: Colors.white60),
+                            ),
+                            Text(
+                              "Modified at: 05/13/2025",
+                              style: Theme.of(context).textTheme.titleSmall!
+                                  .copyWith(color: Colors.white60),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

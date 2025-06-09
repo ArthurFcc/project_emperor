@@ -23,14 +23,43 @@ class BoardgameCard extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Massive Darkness 2: Hellscape (2021)"),
-                Text("Category: Dungeon Crawler"),
-              ],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 6,
+                children: [
+                  Text(
+                    "Massive Darkness 2: Hellscape",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: "Year: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                          text: "2021",
+                          style: TextStyle(fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: "Category: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      children: [
+                        TextSpan(
+                          text: "Dungeon Crawler",
+                          style: TextStyle(fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

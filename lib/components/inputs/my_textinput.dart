@@ -20,7 +20,7 @@ class MyTextInput extends StatelessWidget {
       controller: textEditingController,
       focusNode: focusNode,
       decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         filled: true,
         labelText: label,
         alignLabelWithHint: textBox,
