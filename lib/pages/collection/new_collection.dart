@@ -73,14 +73,11 @@ class _NewCollectionState extends State<NewCollection> {
                               ),
                     ),
                   ),
-                  MyTextInput(
-                    label: 'Title',
-                    textEditingController: TextEditingController(),
-                  ),
+                  MyTextInput(label: 'Title', onChanged: (p0) {}),
                   MyTextInput(
                     label: 'Description',
                     textBox: true,
-                    textEditingController: TextEditingController(),
+                    onChanged: (p0) {},
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

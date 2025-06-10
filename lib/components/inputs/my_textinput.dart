@@ -1,33 +1,49 @@
 import 'package:flutter/material.dart';
 
-class MyTextInput extends StatelessWidget {
+typedef StringCallback = void Function(String);
+
+class MyTextInput extends StatefulWidget {
   final String label;
-  final TextEditingController textEditingController;
   final bool textBox;
+  final StringCallback onChanged;
 
   const MyTextInput({
     super.key,
-    this.textBox = false,
     required this.label,
-    required this.textEditingController,
+    this.textBox = false,
+    required this.onChanged,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final focusNode = FocusNode();
+  State<MyTextInput> createState() => _MyTextInputState();
+}
 
+class _MyTextInputState extends State<MyTextInput> {
+  final focusNode = FocusNode();
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
     return TextFormField(
       controller: textEditingController,
       focusNode: focusNode,
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         filled: true,
-        labelText: label,
-        alignLabelWithHint: textBox,
+        labelText: widget.label,
+        alignLabelWithHint: widget.textBox,
         counterText: '',
+        suffixIcon:
+            textEditingController.text.isNotEmpty
+                ? IconButton(
+                  onPressed: () => textEditingController.clear(),
+                  icon: Icon(Icons.close),
+                )
+                : null,
       ),
-      maxLines: textBox ? 4 : 1,
-      maxLength: textBox ? 150 : 35,
+      maxLines: widget.textBox ? 4 : 1,
+      maxLength: widget.textBox ? 150 : 35,
       onTapOutside: (event) => focusNode.unfocus(),
     );
   }
