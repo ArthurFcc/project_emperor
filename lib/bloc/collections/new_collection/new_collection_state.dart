@@ -2,25 +2,33 @@ part of 'new_collection_cubit.dart';
 
 final class NewCollectionState extends Equatable {
   const NewCollectionState({
-    this.name = '',
-    this.description = '',
+    this.title = const BasicTextFieldInput.pure(),
+    this.description = const BasicTextFieldInput.pure(),
+    this.status = FormzSubmissionStatus.initial,
+    this.isValid = false,
     this.coverImage,
   });
 
-  final String name;
-  final String description;
+  final BasicTextFieldInput title;
+  final BasicTextFieldInput description;
+  final FormzSubmissionStatus status;
+  final bool isValid;
   final XFile? coverImage;
 
   NewCollectionState copyWith({
-    String? name,
-    String? description,
+    bool? isValid,
     XFile? coverImage,
+    BasicTextFieldInput? title,
+    FormzSubmissionStatus? status,
+    BasicTextFieldInput? description,
   }) => NewCollectionState(
-    name: name ?? this.name,
+    title: title ?? this.title,
     description: description ?? this.description,
     coverImage: coverImage ?? this.coverImage,
+    status: status ?? this.status,
+    isValid: isValid ?? this.isValid,
   );
 
   @override
-  List<Object?> get props => [name, description, coverImage];
+  List<Object?> get props => [title, description, coverImage, status, isValid];
 }

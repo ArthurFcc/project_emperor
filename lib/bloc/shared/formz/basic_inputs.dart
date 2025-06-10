@@ -1,8 +1,22 @@
+import 'package:boardgame_collector/bloc/shared/formz/input_error.dart';
 import 'package:formz/formz.dart';
 
 enum EmailInputError { empty, invalid }
 
 enum PhoneInputError { empty, length, invalid }
+
+class BasicTextFieldInput extends FormzInput<String, InputError> {
+  const BasicTextFieldInput.pure() : super.pure('');
+  const BasicTextFieldInput.dirty({String value = ''}) : super.dirty(value);
+
+  @override
+  InputError? validator(String value) {
+    if (value.isEmpty) {
+      return InputError.empty;
+    }
+    return null;
+  }
+}
 
 class EmailInput extends FormzInput<String, EmailInputError> {
   const EmailInput.pure() : super.pure('');

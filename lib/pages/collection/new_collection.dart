@@ -73,11 +73,20 @@ class _NewCollectionState extends State<NewCollection> {
                               ),
                     ),
                   ),
-                  MyTextInput(label: 'Title', onChanged: (p0) {}),
+                  MyTextInput(
+                    label: 'Title',
+                    onChanged:
+                        (value) => context
+                            .read<NewCollectionCubit>()
+                            .titleChanged(value),
+                  ),
                   MyTextInput(
                     label: 'Description',
                     textBox: true,
-                    onChanged: (p0) {},
+                    onChanged:
+                        (value) => context
+                            .read<NewCollectionCubit>()
+                            .descriptionChanged(value),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
