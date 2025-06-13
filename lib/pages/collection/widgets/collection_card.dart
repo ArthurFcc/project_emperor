@@ -5,6 +5,8 @@ class CollectionCard extends StatelessWidget {
   final String title;
   final String description;
   final int boardgameCount;
+  final String creationTime;
+  final String? lastUpdateTime;
 
   const CollectionCard({
     super.key,
@@ -12,11 +14,9 @@ class CollectionCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.boardgameCount,
+    required this.creationTime,
+    required this.lastUpdateTime,
   });
-
-  /*
-    Add cover image to collections
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +83,11 @@ class CollectionCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Created at: 05/13/2025',
+                      'Created at: $creationTime',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
-                      'Last modified: 05/13/2025',
+                      'Last modified: ${lastUpdateTime ?? '-'}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],

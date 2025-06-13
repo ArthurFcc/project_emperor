@@ -1,25 +1,42 @@
 import 'package:boardgame_collector/service/shared/entity.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class CollectionData extends Entity {
+  final XFile? cover;
   final String title;
   final String description;
+  final String creationTime;
+  final String? lastUpdateTime;
   final List<String> boardGames;
-  final List<String> miniatures;
 
   late int numberOfGames;
-  late int numberOfMiniatures;
 
   CollectionData(
     super.id, {
+    this.cover,
     required this.title,
     required this.description,
     required this.boardGames,
-    required this.miniatures,
+    required this.creationTime,
+    required this.lastUpdateTime,
   }) {
     numberOfGames = boardGames.length;
-    numberOfMiniatures = miniatures.length;
   }
 
-  @override
-  set fromJson(Map<String, dynamic> json) {}
+  factory CollectionData.fromJson(Map<String, dynamic> json) => CollectionData(
+    json['id'],
+    title: json['title'] as String,
+    description: json['description'] as String,
+    creationTime: DateFormat(
+      'dd/MM/yyyy HH:mm',
+    ).format(DateTime.parse(json['creationTime'])),
+    lastUpdateTime:
+        json['lastUpdateTime'] != null
+            ? DateFormat(
+              'dd/MM/yyyy HH:mm',
+            ).format(DateTime.parse(json['lastUpdateTime']))
+            : null,
+    boardGames: [],
+  );
 }

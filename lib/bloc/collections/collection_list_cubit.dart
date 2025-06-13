@@ -11,10 +11,10 @@ final class CollectionListCubit extends Cubit<CollectionListState> {
 
   final collectionService = CollectionService();
 
-  Future<void> fetchData() async {
+  Future<void> fetchData({String searchText = ''}) async {
     emit(state.copyWith(status: FetchStatus.loading));
 
-    final collections = await collectionService.fetchCollections();
+    final collections = await collectionService.fetchCollections(searchText);
 
     emit(
       state.copyWith(

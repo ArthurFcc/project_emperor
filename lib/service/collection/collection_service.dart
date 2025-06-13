@@ -8,9 +8,13 @@ class CollectionService {
     _dioClient = CustomHttpClient();
   }
   // Added Future 'cause future calls will be http
-  Future<List<CollectionData>> fetchCollections() async {
-    var response = await _dioClient.get('/boardgame/GetAll');
+  Future<List<CollectionData>> fetchCollections(String searchText) async {
+    var collections = await _dioClient.get<CollectionData>(
+      '/collection/GetAll',
+      CollectionData.fromJson,
+      queryParms: {'SearchText': searchText},
+    );
 
-    return [];
+    return collections.items;
   }
 }

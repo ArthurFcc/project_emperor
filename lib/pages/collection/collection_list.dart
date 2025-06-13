@@ -40,21 +40,28 @@ class _CollectionListState extends State<CollectionList> {
                         top: 12,
                       ),
                       child: SearchBar(
-                        hintText: "Search",
+                        hintText: "Search by title",
                         focusNode: searchFocusNode,
                         leading: Padding(
                           padding: EdgeInsetsGeometry.only(left: 8),
                           child: Icon(Icons.search),
                         ),
+                        onSubmitted:
+                            (value) => BlocProvider.of<CollectionListCubit>(
+                              context,
+                            ).fetchData(searchText: value),
                         onTapOutside: (event) => searchFocusNode.unfocus(),
                       ),
                     ),
                     state.status == FetchStatus.loading
-                        ? Center(
-                          child: SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(),
+                        ? Padding(
+                          padding: const EdgeInsets.only(top: 48),
+                          child: Center(
+                            child: SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(),
+                            ),
                           ),
                         )
                         : ListView.builder(
@@ -78,6 +85,10 @@ class _CollectionListState extends State<CollectionList> {
                                   description:
                                       state.collections[index].description,
                                   title: state.collections[index].title,
+                                  creationTime:
+                                      state.collections[index].creationTime,
+                                  lastUpdateTime:
+                                      state.collections[index].lastUpdateTime,
                                 ),
                               ),
                         ),
