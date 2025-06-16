@@ -30,6 +30,6 @@ class CustomHttpClient {
 
   Future<Map<String, dynamic>> post(String url, {dynamic payload}) async {
     var response = await _client.post(url, data: payload);
-    return response.data;
+    return (response.data as Map<String, dynamic>);
   }
 }

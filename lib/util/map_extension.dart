@@ -14,4 +14,7 @@ extension ListFetchConverter on Map<String, dynamic> {
 
     return PagedResult(totalCount: totalCount, items: parsedData);
   }
+
+  TEntityParse parseJson<TEntityParse extends Entity>(Function jsonFunc) =>
+      jsonFunc(this);
 }
