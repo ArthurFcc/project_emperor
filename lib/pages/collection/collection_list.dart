@@ -79,16 +79,7 @@ class _CollectionListState extends State<CollectionList> {
                                       state.collections[index].id,
                                     ),
                                 child: CollectionCard(
-                                  id: state.collections[index].id,
-                                  boardgameCount:
-                                      state.collections[index].numberOfGames,
-                                  description:
-                                      state.collections[index].description,
-                                  title: state.collections[index].title,
-                                  creationTime:
-                                      state.collections[index].creationTime,
-                                  lastUpdateTime:
-                                      state.collections[index].lastUpdateTime,
+                                  collection: state.collections[index],
                                 ),
                               ),
                         ),

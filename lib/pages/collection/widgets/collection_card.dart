@@ -1,22 +1,10 @@
+import 'package:boardgame_collector/service/collection/collection_data.dart';
 import 'package:flutter/material.dart';
 
 class CollectionCard extends StatelessWidget {
-  final int id;
-  final String title;
-  final String description;
-  final int boardgameCount;
-  final String creationTime;
-  final String? lastUpdateTime;
+  final CollectionData collection;
 
-  const CollectionCard({
-    super.key,
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.boardgameCount,
-    required this.creationTime,
-    required this.lastUpdateTime,
-  });
+  const CollectionCard({super.key, required this.collection});
 
   @override
   Widget build(BuildContext context) {
@@ -34,26 +22,27 @@ class CollectionCard extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsetsGeometry.only(bottom: 12),
-              child: Container(
-                height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  image: DecorationImage(
-                    isAntiAlias: true,
-                    image: AssetImage(
-                      "assets/image.jpg",
-                    ), // Change to only file
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter,
-                  ),
-                ),
-              ),
+              child:
+                  collection.cover != null
+                      ? Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: DecorationImage(
+                            isAntiAlias: true,
+                            image: MemoryImage(collection.cover!),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                          ),
+                        ),
+                      )
+                      : SizedBox(height: 150, child: Icon(Icons.image)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  title,
+                  collection.title,
                   style: Theme.of(
                     context,
                   ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
@@ -63,7 +52,7 @@ class CollectionCard extends StatelessWidget {
                     Icon(Icons.gamepad_rounded),
                     SizedBox(width: 4),
                     Text(
-                      '$boardgameCount',
+                      '${collection.boardGames.length}',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ],
@@ -72,7 +61,10 @@ class CollectionCard extends StatelessWidget {
             ),
 
             SizedBox(height: 12),
-            Text(description, style: Theme.of(context).textTheme.bodyLarge),
+            Text(
+              collection.description,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
             SizedBox(height: 21),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -83,11 +75,11 @@ class CollectionCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Created at: $creationTime',
+                      'Created at: ${collection.creationTime}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Text(
-                      'Last modified: ${lastUpdateTime ?? '-'}',
+                      'Last modified: ${collection.lastUpdateTime ?? '-'}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],

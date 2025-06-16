@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:boardgame_collector/bloc/collections/new_collection/new_collection_cubit.dart';
 import 'package:boardgame_collector/components/inputs/my_textinput.dart';
 import 'package:flutter/material.dart';
@@ -52,9 +50,7 @@ class _NewCollectionState extends State<NewCollection> {
                                   borderRadius: BorderRadius.circular(12),
                                   image: DecorationImage(
                                     isAntiAlias: true,
-                                    image: FileImage(
-                                      File(state.coverImage!.path),
-                                    ),
+                                    image: MemoryImage(state.coverImage!),
                                     fit: BoxFit.cover,
                                     alignment: Alignment.topCenter,
                                   ),

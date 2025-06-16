@@ -1,9 +1,10 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:boardgame_collector/service/shared/entity.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class CollectionData extends Entity {
-  final XFile? cover;
+  final Uint8List? cover;
   final String title;
   final String description;
   final String creationTime;
@@ -26,6 +27,7 @@ class CollectionData extends Entity {
 
   factory CollectionData.fromJson(Map<String, dynamic> json) => CollectionData(
     json['id'],
+    cover: base64Decode(json['cover'] as String),
     title: json['title'] as String,
     description: json['description'] as String,
     creationTime: DateFormat(

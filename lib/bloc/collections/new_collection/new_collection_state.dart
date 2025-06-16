@@ -13,11 +13,11 @@ final class NewCollectionState extends Equatable {
   final BasicTextFieldInput description;
   final FormzSubmissionStatus status;
   final bool isValid;
-  final XFile? coverImage;
+  final Uint8List? coverImage;
 
   NewCollectionState copyWith({
     bool? isValid,
-    XFile? coverImage,
+    Uint8List? coverImage,
     BasicTextFieldInput? title,
     FormzSubmissionStatus? status,
     BasicTextFieldInput? description,

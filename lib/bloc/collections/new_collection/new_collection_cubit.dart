@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:boardgame_collector/bloc/shared/formz/basic_inputs.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +33,6 @@ final class NewCollectionCubit extends Cubit<NewCollectionState> {
   }
 
   Future<void> addCoverImage(XFile newImage) async {
-    emit(state.copyWith(coverImage: newImage));
+    emit(state.copyWith(coverImage: await newImage.readAsBytes()));
   }
 }
