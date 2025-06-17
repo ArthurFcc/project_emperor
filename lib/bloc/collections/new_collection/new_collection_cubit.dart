@@ -4,6 +4,7 @@ import 'package:boardgame_collector/bloc/shared/formz/basic_inputs.dart';
 import 'package:boardgame_collector/service/collection/collection_service.dart';
 import 'package:boardgame_collector/service/collection/new_collection_data.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:image_picker/image_picker.dart';
@@ -42,7 +43,7 @@ final class NewCollectionCubit extends Cubit<NewCollectionState> {
 
   // Improve error handling, I made a mistake on the request/parse structure that
   // makes the error handling difficult
-  Future<void> createCollection() async {
+  Future<void> createCollection(BuildContext context) async {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     if (state.isValid) {
       var collection = NewCollectionData(
@@ -50,8 +51,13 @@ final class NewCollectionCubit extends Cubit<NewCollectionState> {
         title: state.title.value,
         description: state.description.value,
       );
-      await collectionService.createCollection(collection);
-      emit(state.copyWith(status: FormzSubmissionStatus.success));
+      var success = await collectionService.createCollection(collection);
+
+      if (success) {
+        emit(state.copyWith(status: FormzSubmissionStatus.success));
+      } else {
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
+      }
     }
   }
 }

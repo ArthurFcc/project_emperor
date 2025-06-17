@@ -18,8 +18,11 @@ class _CollectionListState extends State<CollectionList> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<CollectionListCubit>(context).fetchData();
+    fetchData();
   }
+
+  Future<void> fetchData() =>
+      BlocProvider.of<CollectionListCubit>(context).fetchData();
 
   @override
   Widget build(BuildContext context) {
@@ -29,61 +32,64 @@ class _CollectionListState extends State<CollectionList> {
       child: Scaffold(
         body: BlocBuilder<CollectionListCubit, CollectionListState>(
           builder:
-              (context, state) => SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsetsGeometry.only(
-                        left: 21,
-                        right: 21,
-                        top: 12,
-                      ),
-                      child: SearchBar(
-                        hintText: "Search by title",
-                        focusNode: searchFocusNode,
-                        leading: Padding(
-                          padding: EdgeInsetsGeometry.only(left: 8),
-                          child: Icon(Icons.search),
+              (context, state) => RefreshIndicator(
+                onRefresh: () => fetchData(),
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsGeometry.only(
+                          left: 21,
+                          right: 21,
+                          top: 12,
                         ),
-                        onSubmitted:
-                            (value) => BlocProvider.of<CollectionListCubit>(
-                              context,
-                            ).fetchData(searchText: value),
-                        onTapOutside: (event) => searchFocusNode.unfocus(),
-                      ),
-                    ),
-                    state.status == FetchStatus.loading
-                        ? Padding(
-                          padding: const EdgeInsets.only(top: 48),
-                          child: Center(
-                            child: SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(),
-                            ),
+                        child: SearchBar(
+                          hintText: "Search by title",
+                          focusNode: searchFocusNode,
+                          leading: Padding(
+                            padding: EdgeInsetsGeometry.only(left: 8),
+                            child: Icon(Icons.search),
                           ),
-                        )
-                        : ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          addAutomaticKeepAlives: true,
-                          addRepaintBoundaries: true,
-                          itemCount: state.collections.length,
-                          shrinkWrap: true,
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          itemBuilder:
-                              (context, index) => GestureDetector(
-                                onTap:
-                                    () => openCollection(
-                                      context,
-                                      state.collections[index].id,
-                                    ),
-                                child: CollectionCard(
-                                  collection: state.collections[index],
-                                ),
-                              ),
+                          onSubmitted:
+                              (value) => BlocProvider.of<CollectionListCubit>(
+                                context,
+                              ).fetchData(searchText: value),
+                          onTapOutside: (event) => searchFocusNode.unfocus(),
                         ),
-                  ],
+                      ),
+                      state.status == FetchStatus.loading
+                          ? Padding(
+                            padding: const EdgeInsets.only(top: 48),
+                            child: Center(
+                              child: SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          )
+                          : ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            addAutomaticKeepAlives: true,
+                            addRepaintBoundaries: true,
+                            itemCount: state.collections.length,
+                            shrinkWrap: true,
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            itemBuilder:
+                                (context, index) => GestureDetector(
+                                  onTap:
+                                      () => openCollection(
+                                        context,
+                                        state.collections[index].id,
+                                      ),
+                                  child: CollectionCard(
+                                    collection: state.collections[index],
+                                  ),
+                                ),
+                          ),
+                    ],
+                  ),
                 ),
               ),
         ),

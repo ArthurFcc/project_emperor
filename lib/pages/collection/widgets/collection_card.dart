@@ -36,7 +36,16 @@ class CollectionCard extends StatelessWidget {
                           ),
                         ),
                       )
-                      : SizedBox(height: 150, child: Icon(Icons.image)),
+                      : SizedBox(
+                        height: 150,
+                        child: Center(
+                          child: Icon(
+                            Icons.image,
+                            size: 80,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

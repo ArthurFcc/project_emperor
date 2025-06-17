@@ -27,7 +27,7 @@ class CollectionData extends Entity {
 
   factory CollectionData.fromJson(Map<String, dynamic> json) => CollectionData(
     json['id'],
-    cover: base64Decode(json['cover'] as String),
+    cover: json['cover'] != null ? base64Decode(json['cover'] as String) : null,
     title: json['title'] as String,
     description: json['description'] as String,
     creationTime: DateFormat(

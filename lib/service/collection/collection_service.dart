@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:boardgame_collector/service/collection/collection_data.dart';
 import 'package:boardgame_collector/service/collection/new_collection_data.dart';
 import 'package:boardgame_collector/service/http_client.dart';
@@ -10,23 +9,29 @@ class CollectionService {
   CollectionService() {
     _dioClient = CustomHttpClient();
   }
-  // Added Future 'cause future calls will be http
+
   Future<List<CollectionData>> fetchCollections(String searchText) async {
-    var collections = await _dioClient.get<CollectionData>(
+    var response = await _dioClient.get(
       '/collection/GetAll',
-      CollectionData.fromJson,
       queryParms: {'SearchText': searchText},
     );
 
-    return collections.items;
+    if (response.statusCode == 200) {
+      var collections = (response.data as Map<String, dynamic>)
+          .parseJsonList<CollectionData>(CollectionData.fromJson);
+
+      return collections.items;
+    } else {
+      return List.empty();
+    }
   }
 
-  Future<CollectionData> createCollection(NewCollectionData collection) async {
-    var newCollection = await _dioClient.post(
+  Future<bool> createCollection(NewCollectionData collection) async {
+    var response = await _dioClient.post(
       '/collection/Create',
-      payload: jsonEncode(collection),
+      payload: collection.toJson(),
     );
-
-    return newCollection.parseJson(CollectionData.fromJson);
+    if (response.statusCode == 200) return true;
+    return false;
   }
 }

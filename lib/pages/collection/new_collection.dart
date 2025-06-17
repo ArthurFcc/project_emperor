@@ -1,7 +1,10 @@
 import 'package:boardgame_collector/bloc/collections/new_collection/new_collection_cubit.dart';
+import 'package:boardgame_collector/components/alerts/custom_snackbar.dart';
+import 'package:boardgame_collector/components/alerts/snackbar_type.dart';
 import 'package:boardgame_collector/components/inputs/my_textinput.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:image_picker/image_picker.dart';
 
 class NewCollection extends StatefulWidget {
@@ -22,12 +25,32 @@ class _NewCollectionState extends State<NewCollection> {
     }
   }
 
+  void showSnackBar(BuildContext context, SnackbarType type, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      CustomSnackBar.buildCustomSnackBar(type, message),
+      snackBarAnimationStyle: AnimationStyle(curve: Curves.bounceIn),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text('New Collection')),
-      body: BlocBuilder<NewCollectionCubit, NewCollectionState>(
+      body: BlocConsumer<NewCollectionCubit, NewCollectionState>(
+        listener: (context, state) {
+          if (state.status == FormzSubmissionStatus.success) {
+            showSnackBar(context, SnackbarType.success, "Collection created!");
+            Navigator.of(context).pop();
+          }
+          if (state.status == FormzSubmissionStatus.failure) {
+            showSnackBar(
+              context,
+              SnackbarType.error,
+              "An error occurred while trying to create a new collection. Please, try again.",
+            );
+          }
+        },
         builder:
             (context, state) => Padding(
               padding: EdgeInsets.symmetric(horizontal: 21),
@@ -94,7 +117,13 @@ class _NewCollectionState extends State<NewCollection> {
                           child: Text("Cancel"),
                         ),
                       ),
-                      FilledButton(onPressed: () {}, child: Text("Save")),
+                      FilledButton(
+                        onPressed:
+                            () => BlocProvider.of<NewCollectionCubit>(
+                              context,
+                            ).createCollection(context),
+                        child: Text("Save"),
+                      ),
                     ],
                   ),
                 ],
