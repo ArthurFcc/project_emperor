@@ -1,8 +1,11 @@
+import 'package:boardgame_collector/components/buttons/popup_menu.dart';
 import 'package:boardgame_collector/pages/collection/widgets/boardgame_card.dart';
+import 'package:boardgame_collector/service/collection/collection_data.dart';
 import 'package:flutter/material.dart';
 
 class Collection extends StatefulWidget {
-  const Collection({super.key});
+  final CollectionData collection;
+  const Collection({super.key, required this.collection});
 
   @override
   State<Collection> createState() => _ViewCollectionState();
@@ -12,7 +15,18 @@ class _ViewCollectionState extends State<Collection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          PopupMenuHelper.buildPopupMenu(
+            context,
+            onSelected: (value) {},
+            optionsList: [
+              {"Edit": Icons.edit},
+              {"Delete": Icons.delete},
+            ],
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -23,17 +37,19 @@ class _ViewCollectionState extends State<Collection> {
                 vertical: 12,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Text(
-                        "Collection Name",
+                        widget.collection.title,
                         style: Theme.of(context).textTheme.headlineLarge,
                       ),
                     ],
                   ),
                   Text(
-                    "My super big description. My dungeon crawler boardgame collection",
+                    widget.collection.description,
+                    textAlign: TextAlign.justify,
                     softWrap: true,
                     style: Theme.of(
                       context,
@@ -57,15 +73,16 @@ class _ViewCollectionState extends State<Collection> {
                         Column(
                           children: [
                             Text(
-                              "Created at: 05/13/2025",
+                              "Created at: ${widget.collection.creationTime}",
                               style: Theme.of(context).textTheme.titleSmall!
                                   .copyWith(color: Colors.white60),
                             ),
-                            Text(
-                              "Modified at: 05/13/2025",
-                              style: Theme.of(context).textTheme.titleSmall!
-                                  .copyWith(color: Colors.white60),
-                            ),
+                            if (widget.collection.lastUpdateTime != null)
+                              Text(
+                                "Modified at: ${widget.collection.lastUpdateTime}",
+                                style: Theme.of(context).textTheme.titleSmall!
+                                    .copyWith(color: Colors.white60),
+                              ),
                           ],
                         ),
                       ],
@@ -82,17 +99,24 @@ class _ViewCollectionState extends State<Collection> {
 
   buildCoverImage() => Stack(
     children: [
-      Container(
-        height: 250,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            isAntiAlias: true,
-            image: AssetImage("assets/image.jpg"), // Change to only file
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
+      widget.collection.cover != null
+          ? Container(
+            height: 250,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                isAntiAlias: true,
+                image: MemoryImage(widget.collection.cover!),
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
+            ),
+          )
+          : SizedBox(
+            height: 250,
+            child: Center(
+              child: Icon(Icons.image, size: 80, color: Colors.grey),
+            ),
           ),
-        ),
-      ),
       Container(
         height: 250,
         decoration: BoxDecoration(

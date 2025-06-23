@@ -3,6 +3,7 @@ import 'package:boardgame_collector/bloc/collections/new_collection/new_collecti
 import 'package:boardgame_collector/pages/collection/collection.dart';
 import 'package:boardgame_collector/pages/collection/new_collection.dart';
 import 'package:boardgame_collector/pages/collection/widgets/collection_card.dart';
+import 'package:boardgame_collector/service/collection/collection_data.dart';
 import 'package:boardgame_collector/service/shared/fetch_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,7 +82,7 @@ class _CollectionListState extends State<CollectionList> {
                                   onTap:
                                       () => openCollection(
                                         context,
-                                        state.collections[index].id,
+                                        state.collections[index],
                                       ),
                                   child: CollectionCard(
                                     collection: state.collections[index],
@@ -115,7 +116,10 @@ class _CollectionListState extends State<CollectionList> {
         ),
       );
 
-  void openCollection(BuildContext context, int id) => Navigator.of(
-    context,
-  ).push(MaterialPageRoute(builder: (context) => Collection()));
+  void openCollection(BuildContext context, CollectionData collection) =>
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Collection(collection: collection),
+        ),
+      );
 }
